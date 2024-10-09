@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HealthSync - Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #8000ff, #6d3ba2); /* Gradient with two purple shades */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        .card {
+            background-color: #fff; /* White background for the form card */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #663399; /* Purple color for the headers */
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #333; /* Darker text color for labels */
+            float: left;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-custom {
+            background-color: #663399;
+            border-color: #663399;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .btn-custom:hover {
+            background-color: #552286; /* Darker purple on hover */
+            border-color: #552286;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        a {
+            color: #663399;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            color: #663399;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 class="card-title">HealthSync</h2>
+        <h3 class="card-title text-center" style="color: black;">Login</h3>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {{ form.email(class="form-control", size=32) }}
+                {% for error in form.email.errors %}
+                    <small class="error-message">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {{ form.password(class="form-control", size=32) }}
+                {% for error in form.password.errors %}
+                    <small class="error-message">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-custom">{{ form.submit.label.text }}</button>
+            <a href="#" class="small">Forgot Password?</a>
+        </form>
+        <div class="register-link">
+           <h6> Don't have an account? <a href="{{ url_for('main.register') }}">Register</a></h6>
+        </div>
+    </div>
+</body>
+</html>

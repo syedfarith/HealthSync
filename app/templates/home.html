@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthSync - Secure Medical Data Storage and Analysis Platform">
+    <meta name="keywords" content="HealthSync, Medical Data, Secure Storage, AI Analysis, Health Assistant">
+    <meta name="author" content="HealthSync Team">
+    <title>HealthSync - Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #cce7ff;
+            --background-color: #e0f7fa;
+            --text-color: #333;
+            --white-color: white;
+            --accent-color: #ff4081;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .header-title {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            transition: background-color 0.3s;
+        }
+
+        .navbar:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-item:last-child {
+            margin-right: 0;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--white-color);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            left: 50%;
+            bottom: -5px;
+            transition: width 0.3s, left 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .dropdown-menu a {
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            color: #0056b3;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .welcome-section {
+            background-color: var(--white-color);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 1500px;
+            margin: 2rem auto;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .section1, .section2, .section3, .section4, .section5 {
+            margin-bottom: 2rem;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .section1:hover, .section2:hover, .section3:hover, .section4:hover, .section5:hover {
+            transform: scale(1.02);
+            background-color: var(--secondary-color);
+        }
+
+        h1, h2, h4, p {
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+        }
+
+        h4 {
+            color: var(--accent-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+            padding: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">HealthSync</div>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.index') }}">Manage Files</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.chatbot_home') }}">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.pdf_analysis') }}">Analysis</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.med') }}">Diagnostic</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hello, {{ current_user.username }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ url_for('main.account') }}">Account</a>
+                                <a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome-section">
+            <h2>Welcome to HealthSync</h2>
+            {% if current_user.is_authenticated %}
+            <br>
+            <div class="section1">
+                <h1>Secure Medical Data Storage</h1>
+                <h4>Manage Your Health Records with Confidence</h4>
+                <p>Our platform offers a secure and user-friendly way to store and manage all your medical records in one place. With advanced encryption techniques and compliance with health regulations like HIPAA, you can rest assured that your data is safe and private. Easily upload and organize your health histories, prescriptions, lab results, and imaging reports. Access your records anytime, anywhere, and share them with your healthcare providers with just a few clicks.</p>
+                <h5><a href="{{ url_for('main.index') }}">Explore</a></h5>
+            </div>
+            <br>
+            <div class="section2">
+                <h1>Intelligent Chatbot</h1>
+                <h4>Your Personal Health Assistant</h4>
+                <p>Our intelligent chatbot, powered by natural language processing (NLP), is your go-to resource for reliable health information. Whether you have questions about symptoms, treatments, medication side effects, or general health advice, our chatbot is here to help. It provides accurate and up-to-date information, serving as a convenient first point of contact for your medical concerns.</p>
+                <h5><a href="{{ url_for('main.chatbot_home') }}">Explore</a></h5>
+            </div>
+            <br>
+            <div class="section3">
+                <h1>Medical Report Analysis</h1>
+                <h4>Efficiently Analyze Medical Reports</h4>
+                <p>Our AI-powered medical report analysis tool is designed to provide you with quick and reliable insights by analyzing your uploaded medical records. Simply upload your medical records as a file, and our advanced artificial intelligent algorithms will take it from there. The tool can interpret various types of medical documents, including lab results and prescriptions, to detect abnormalities and offer preliminary diagnostic insights. This encourages timely consultations with healthcare professionals and supports earlier detection and treatment of diseases.</p>
+                <h5><a href="{{ url_for('main.pdf_analysis') }}">Explore</a></h5>
+            </div>
+            <br>
+            <div class="section4">
+                <h1>AI-Powered Diagnostic Tool</h1>
+                <h4>Early Detection and Insights</h4>
+                <p>Our AI-powered diagnostic tool revolutionizes how you manage your health. By analyzing uploaded medical scans and X-rays using advanced machine learning algorithms, it can detect abnormalities and provide preliminary diagnostic insights. And it will give the clear overview of the particular diseas using artificial intelligent and large language models.</p>
+                <h5><a href="{{ url_for('main.med') }}">Explore</a></h5>
+            </div>
+            <br>
+            <div class="section5">
+                <h1>Medical Dashboard</h1>
+                <h4>Efficiently Analyze Imaging Reports</h4>
+                <p>Our Medical dashboard tool offers rapid and dependable insights by analyzing your submitted medical documents in PDF format. Upload your medical records, The tool can interpret a variety of medical documents, such as laboratory results to display your blood pressure and sugar levels directly on your dashboard, giving you a clear and comprehensive overview of your health metrics.</p>
+                <h5><a href="{{ url_for('main.dashboard') }}">Explore</a></h5>
+            </div>
+            {% else %}
+            <p>
+                This project introduces a digital health platform that revolutionizes personal health management by integrating secure medical data storage, an intelligent chatbot, and an AI-powered diagnostic tool. 
+                Users can securely store and manage medical records, receive reliable health information through a natural language processing chatbot, and get preliminary diagnostic insights from AI-analyzed medical scans. 
+                The platform enhances user convenience and confidence in managing health data, promoting proactive healthcare management and improved health outcomes. Future developments will expand AI diagnostic capabilities, enhance the chatbot's knowledge base, and refine usability based on user feedback.</p>
+            <h4>Please <a href="{{ url_for('main.login') }}">login</a> or <a href="{{ url_for('main.register') }}">register</a> to access more features.</h4>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HealthSync. All rights reserved.</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

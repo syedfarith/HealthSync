@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthSync - Secure Medical Data Storage and Analysis Platform">
+    <meta name="keywords" content="HealthSync, Medical Data, Secure Storage, AI Analysis, Health Assistant">
+    <meta name="author" content="HealthSync Team">
+    <title>MedQuery Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #cce7ff;
+            --background-color: #e0f7fa;
+            --text-color: #333;
+            --white-color: white;
+            --accent-color: #ff4081;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            padding: 0.5rem;
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--white-color);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            left: 50%;
+            bottom: -5px;
+            transition: width 0.3s, left 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .chat-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            flex-grow: 1;
+        }
+
+        .chat-container h1 {
+            margin: 0 0 20px;
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .model-select {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .model-select select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            background-color: #f0f0f0;
+        }
+
+        .chat-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            height: 500px;
+            overflow-y: auto;
+            width: 100%;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-box .message-group {
+            margin-bottom: 10px;
+        }
+
+        .chat-box p {
+            margin: 5px 0;
+        }
+
+        .user-message {
+            text-align: right;
+            color: white;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            padding: 10px;
+            border-radius: 15px;
+            display: inline-block;
+            max-width: 80%;
+            align-self: flex-end;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bot-message {
+            text-align: left;
+            color: #333;
+            background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+            padding: 10px;
+            border-radius: 15px;
+            display: inline-block;
+            max-width: 80%;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-container input {
+            flex: 5;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            margin-right: 10px;
+            background-color: #f0f0f0;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #d45b69;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .input-container button:hover {
+            background-color: #b03a47;
+        }
+
+        .input-container button svg {
+            margin-left: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+            padding: 0.5rem;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">HealthSync</div>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.index') }}">Manage Files</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.chatbot_home') }}">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.pdf_analysis') }}">Analysis</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.med') }}">Diagnostic</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hello, {{ current_user.username }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ url_for('main.account') }}">Account</a>
+                                <a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="chat-container">
+        <h1>MedQuery Chatbot</h1>
+        <div class="model-select">
+            <select id="model">
+                <option value="gemini-1.5-flash-latest">Gemini 1.5</option>
+                <option value="llama3-8b-8192">Llama3-8b-8192</option>
+                <option value="llama3-70b-8192">Llama3-70b-8192</option>
+            </select>
+        </div>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-container">
+            <input type="text" id="message" placeholder="Type here...">
+            <button onclick="sendMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-4.147-4.146a.5.5 0 0 1 .708-.708l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="loading" id="loading">Processing...</div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 HealthSync. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function formatResponse(response) {
+            response = response.replace(/##\s*/g, ''); // Remove ##
+            response = response.replace(/\*\*(.*?)\*\*/g, '<br><b>$1</b>'); // Make text bold and start a new line
+            response = response.replace(/\*\s*/g, ''); // Remove single asterisks and any following whitespace
+            response = response.replace(/(<b>.*?<\/b>)/g, '<br>$1'); // Add an extra line break before each bold section
+
+            return response;
+        }
+
+        async function sendMessage() {
+            const chatBox = document.getElementById('chat-box');
+            const messageInput = document.getElementById('message');
+            const modelSelect = document.getElementById('model');
+            const loading = document.getElementById('loading');
+            
+            const message = messageInput.value;
+            const model = modelSelect.value;
+
+            if (!message) return;
+
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+
+            const userMessage = document.createElement('p');
+            userMessage.className = 'user-message';
+            userMessage.innerText = message;
+            messageGroup.appendChild(userMessage);
+            chatBox.appendChild(messageGroup);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            messageInput.value = '';
+
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message, model })
+                });
+
+                const data = await response.json();
+                const formattedResponse = formatResponse(data.response || data.error);
+
+                const botMessage = document.createElement('p');
+                botMessage.className = 'bot-message';
+                botMessage.innerHTML = formattedResponse;
+                messageGroup.appendChild(botMessage);
+                chatBox.appendChild(messageGroup);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'bot-message';
+                errorMessage.innerText = 'An error occurred. Please try again.';
+                messageGroup.appendChild(errorMessage);
+                chatBox.appendChild(messageGroup);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

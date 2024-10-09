@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HealthSync - Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #8000ff, #6d3ba2); /* Gradient with two purple shades */
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh; /* Ensure body covers full height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card {
+            background-color: #fff; /* White background for the form card */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2, h3 {
+            color: #663399; /* Purple color for the headers */
+            text-align: center;
+        }
+
+        .form-group label {
+            color: #333; /* Darker text color for labels */
+            float: left;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-custom {
+            background-color: #663399;
+            border-color: #663399;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .btn-custom:hover {
+            background-color: #552286;
+            border-color: #552286;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+        }
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            color: #663399;
+        }
+
+        .login-link a {
+            color: #663399;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2 class="card-title">HealthSync</h2>
+        <h3 class="card-title text-center" style="color: black;">Register</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.username.label(class="form-control-label") }}
+                    {{ form.username(class="form-control", size=32) }}
+                    {% for error in form.username.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email(class="form-control", size=32) }}
+                    {% for error in form.email.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.phone_number.label(class="form-control-label") }}
+                    {{ form.phone_number(class="form-control", size=32) }}
+                    {% for error in form.phone_number.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.age.label(class="form-control-label") }}
+                    {{ form.age(class="form-control", size=32) }}
+                    {% for error in form.age.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.gender.label(class="form-control-label") }}
+                    {{ form.gender(class="form-control") }}
+                    {% for error in form.gender.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.city.label(class="form-control-label") }}
+                    {{ form.city(class="form-control", size=32) }}
+                    {% for error in form.city.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.state.label(class="form-control-label") }}
+                    {{ form.state(class="form-control", size=32) }}
+                    {% for error in form.state.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.country.label(class="form-control-label") }}
+                    {{ form.country(class="form-control", size=32) }}
+                    {% for error in form.country.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.abha_id.label(class="form-control-label") }}
+                    {{ form.abha_id(class="form-control", size=32) }}
+                    {% for error in form.abha_id.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.abha_address.label(class="form-control-label") }}
+                    {{ form.abha_address(class="form-control", size=32) }}
+                    {% for error in form.abha_address.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.password.label(class="form-control-label") }}
+                    {{ form.password(class="form-control", size=32) }}
+                    {% for error in form.password.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.confirm_password.label(class="form-control-label") }}
+                    {{ form.confirm_password(class="form-control", size=32) }}
+                    {% for error in form.confirm_password.errors %}
+                        <small class="error-message">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-custom btn-block">{{ form.submit.label.text }}</button>
+        </form>
+        <div class="login-link">
+            <p>Already have an account? <a href="{{ url_for('main.login') }}">Login</a></p>
+        </div>
+        
+    </div>
+</body>
+
+</html>

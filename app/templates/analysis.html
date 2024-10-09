@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthSync - Secure Medical Data Storage and Analysis Platform">
+    <meta name="keywords" content="HealthSync, Medical Data, Secure Storage, AI Analysis, Health Assistant">
+    <meta name="author" content="HealthSync Team">
+    <title>Medical Data Upload</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #cce7ff;
+            --background-color: #e0f7fa;
+            --text-color: #333;
+            --white-color: white;
+            --accent-color: #ff4081;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            padding: 0.5rem;
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--white-color);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            left: 50%;
+            bottom: -5px;
+            transition: width 0.3s, left 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+            flex-grow: 1;
+        }
+
+        .card {
+            padding: 30px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            background-color: #e9ecef;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper .file-upload-text {
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .file-upload-wrapper .file-name {
+            font-size: 18px;
+            color: #000;
+        }
+
+        .btn-upload {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-upload:hover {
+            background-color: #0056b3;
+        }
+
+        .response-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .response-box h4 {
+            font-weight: bold;
+        }
+
+        .response-box p {
+            font-size: 16px;
+        }
+
+        .response-box p span {
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+            padding: 0.5rem;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">HealthSync</div>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.index') }}">Manage Files</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.chatbot_home') }}">Chatbot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.pdf_analysis') }}">Analysis</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.med') }}">Diagnostic</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hello, {{ current_user.username }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ url_for('main.account') }}">Account</a>
+                                <a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title text-center">Upload Medical Record</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="file-upload-wrapper">
+                    <input type="file" id="file" name="file" accept=".txt, .pdf" required>
+                    <span class="file-upload-text">Drag and drop a file or click to select</span>
+                    <span class="file-name" style="display: none;"></span>
+                </div>
+                <button type="submit" class="btn-upload">Upload</button>
+            </form>
+        </div>
+        <div id="response" class="response-box" style="display: none;">
+            <h4>Response</h4>
+            <p id="response-content"></p>
+            <h4 id="label">Disclaimer</h4>
+            <h4 style="color: red;">This information is for educational purposes only and should not be taken as medical advice. Consult a medical professional for personalized diagnosis and treatment.</h4 style="color: red;">
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f9;
+                        margin: 0;
+                        padding: 0;
+                    }
+            
+                    #response-content {
+                        padding: 20px;
+                        background-color: #ffffff;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        border-radius: 10px;
+                        transition: all 0.3s ease-in-out;
+                        opacity: 0;
+                        transform: translateY(20px);
+                        animation: fadeInUp 0.6s ease-in-out forwards;
+                    }
+            
+                    h4 {
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        color: #333;
+                    }
+            
+                    #label {
+                        color: #ff6f61;
+                        margin-top: 40px;
+                        text-align: center;
+                        animation: slideInFromLeft 0.8s ease-in-out forwards;
+                    }
+            
+                    .disclaimer {
+                        background-color: #ffe9e9;
+                        border-left: 5px solid red;
+                        padding: 15px;
+                        font-size: 1.2rem;
+                        color: #d93025;
+                        border-radius: 8px;
+                        text-align: center;
+                        opacity: 0;
+                        animation: bounceIn 1s ease-in-out forwards;
+                        animation-delay: 0.5s; /* Delay to make the animation start later */
+                    }
+            
+                    /* Animations */
+                    @keyframes fadeInUp {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+            
+                    @keyframes slideInFromLeft {
+                        0% {
+                            opacity: 0;
+                            transform: translateX(-100%);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+            
+                    @keyframes bounceIn {
+                        0% {
+                            opacity: 0;
+                            transform: scale(0.5);
+                        }
+                        60% {
+                            opacity: 1;
+                            transform: scale(1.05);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: scale(1);
+                        }
+                    }
+            
+                    /* Hover effect for response content */
+                    #response-content:hover {
+                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+                    }
+            
+                </style>
+        </div>
+    </div>
+    <br>
+    <br>
+    <footer>
+        <p>&copy; 2024 HealthSync. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#file').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                if (fileName) {
+                    $('.file-upload-text').hide();
+                    $('.file-name').text(fileName).show();
+                } else {
+                    $('.file-upload-text').show();
+                    $('.file-name').hide();
+                }
+            });
+
+            $('#upload-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $('#response').show();
+                        $('#response-content').html(formatResponse(data.response));
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('File upload failed: ' + errorThrown);
+                    }
+                });
+            });
+
+            function formatResponse(response) {
+                response = response.replace(/##\s*/g, ''); // Remove ##
+                response = response.replace(/\*\*(.*?)\*\*/g, '<br><b>$1</b>'); // Make text bold and start a new line
+                response = response.replace(/\*\s*/g, ''); // Remove single asterisks and any following whitespace
+                response = response.replace(/(<b>.*?<\/b>)/g, '<br>$1'); // Add an extra line break before each bold section
+
+                return response;
+            }
+        });
+    </script>
+</body>
+</html>
